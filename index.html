@@ -1,0 +1,28 @@
+<!doctype html>
+<html>
+<head><meta charset="utf8"></head>
+<body>
+  <button onclick="compile()">Instantiate</button>
+  <button onclick="printBytes()">Print Bytes</button>
+  <div id="out"></div>
+  <script>
+    const out = document.getElementById('out');
+    function println(str) {
+      out.innerHTML += str + '<' + "br" + '>';
+    }
+
+    function compile() {
+      WebAssembly.instantiateStreaming(fetch('test.wasm'))
+      .then(({module,instance}) => println("instantiated and run: " + String(instance.exports.run())))
+      .catch(err => println("error! " + String(err)));
+    }
+
+    function printBytes() {
+      fetch('test.wasm')
+      .then(response => response.arrayBuffer())
+      .then(buffer => println("ArrayBuffer: " + new Uint8Array(buffer).join(',')))
+      .catch(err => println("error! " + String(err)));
+    }
+  </script>
+</body>
+</html>
