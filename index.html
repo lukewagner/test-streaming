@@ -15,14 +15,14 @@
 
     function compile(file) {
       WebAssembly.compileStreaming(fetch(file))
-      .then(module => println("compile success"))
+      .then(module => println("compiled " + file + " successfully"))
       .catch(err => println("error! " + String(err)));
     }
 
     function printBytes(file) {
       fetch(file)
       .then(response => response.arrayBuffer())
-      .then(buffer => println("First 20 bytes: " + new Uint8Array(buffer, 0, 20).join(',')))
+      .then(buffer => println("First 20 bytes of " + file + ": " + new Uint8Array(buffer, 0, 20).join(',')))
       .catch(err => println("error! " + String(err)));
     }
   </script>
