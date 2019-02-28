@@ -2,8 +2,10 @@
 <html>
 <head><meta charset="utf8"></head>
 <body>
-  <button onclick="compile()">Instantiate</button>
-  <button onclick="printBytes()">Print Bytes</button>
+  <button onclick="compile('small.wasm')">Compile Small</button>
+  <button onclick="compile('big.wasm')">Compile Big</button>
+  <button onclick="printBytes('small.wasm')">Print Small</button>
+  <button onclick="printBytes('big.wasm')">Print Big</button>
   <div id="out"></div>
   <script>
     const out = document.getElementById('out');
@@ -11,16 +13,16 @@
       out.innerHTML += str + '<' + "br" + '>';
     }
 
-    function compile() {
-      WebAssembly.instantiateStreaming(fetch('test.wasm'))
-      .then(({module,instance}) => println("instantiated and run: " + String(instance.exports.run())))
+    function compile(file) {
+      WebAssembly.compileStreaming(fetch(file))
+      .then(module => println("compile success"))
       .catch(err => println("error! " + String(err)));
     }
 
-    function printBytes() {
-      fetch('test.wasm')
+    function printBytes(file) {
+      fetch(file)
       .then(response => response.arrayBuffer())
-      .then(buffer => println("ArrayBuffer: " + new Uint8Array(buffer).join(',')))
+      .then(buffer => println("First 20 bytes: " + new Uint8Array(buffer, 0, 20).join(',')))
       .catch(err => println("error! " + String(err)));
     }
   </script>
