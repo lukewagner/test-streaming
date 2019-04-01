@@ -4,8 +4,6 @@
 <body>
   <button onclick="compile('small.wasm')">Compile Small</button>
   <button onclick="compile('big.wasm')">Compile Big</button>
-  <button onclick="printBytes('small.wasm')">Print Small</button>
-  <button onclick="printBytes('big.wasm')">Print Big</button>
   <div id="out"></div>
   <script>
     const out = document.getElementById('out');
@@ -16,13 +14,6 @@
     function compile(file) {
       WebAssembly.compileStreaming(fetch(file))
       .then(module => println("compiled " + file + " successfully"))
-      .catch(err => println("error! " + String(err)));
-    }
-
-    function printBytes(file) {
-      fetch(file)
-      .then(response => response.arrayBuffer())
-      .then(buffer => println("First 20 bytes of " + file + ": " + new Uint8Array(buffer, 0, 20).join(',')))
       .catch(err => println("error! " + String(err)));
     }
   </script>
